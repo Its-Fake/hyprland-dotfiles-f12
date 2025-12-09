@@ -47,13 +47,13 @@ fi
 
 # --- AUR PAKETE ---
 echo ""
-read -p "do you want to install the packages from aurlist? (y/n): " confirm_aur
+read -p "do you want to install the packages from aurlist? if yes --noconfirm is used (y/n): " confirm_aur
 if [[ "$confirm_aur" =~ ^[Yy]$ ]]; then
     # security check: only works if yay is installed
     if command -v yay &> /dev/null; then
         echo "install AUR packages..."
         # grep filter the comments
-        yay -S --needed $(grep -v '^#' aurlist)
+        yay -S --needed --noconfirm $(grep -v '^#' aurlist)
     else
         echo "ERROR: can't install AUR packages, because yay isn't installed"
     fi
