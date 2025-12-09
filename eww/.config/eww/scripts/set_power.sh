@@ -1,0 +1,1 @@
+powerprofilesctl set $1

@@ -1,0 +1,163 @@
+// -*- mode: jsonc -*-
+{
+    // "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    "height": 30, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 4, // Gaps between modules (4px)
+
+    // Choose the order of the modules
+    "modules-left": [
+	"hyprland/workspaces",
+	"custom/close-window",
+	"custom/launcher",
+	"custom/keyboard"
+    ],
+    "modules-center": [
+        "custom/date"
+    ],
+    "modules-right": [
+	"tray",
+	"custom/media",
+        "battery",
+	"network",
+	"pulseaudio",
+	"custom/not",
+        "custom/power"
+    ],
+    // Modules configuration
+    "hyprland/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": true,
+         "warp-on-scroll": false,
+         "format": "{name}: {icon}"
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 10
+        // "icons": {
+        //   "blueman": "bluetooth",
+        //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+        // }
+    },
+    "custom/date": {
+        "exec": "TZ='Europe/Berlin' date +'%a %d.%m %H:%M' | sed 's/Mon/Mo/g; s/Tue/Di/g; s/Wed/Mi/g; s/Thu/Do/g; s/Fri/Fr/g; s/Sat/Sa/g; s/Sun/So/g'",
+    	"on-click": "flatpak run com.brave.Browser https://calendar.google.com/calendar/u/0/r/month",
+	"interval": 30,
+	"tooltip": false
+    },
+    "custom/not":{
+	"format": {},
+	"exec": "$HOME/bin/scripts/not_count.sh",
+        "interval": 2,
+        "tooltip": false,
+	"on-update": "$HOME/bin/scripts/not_count.sh",
+        "on-click": "$HOME/.config/eww/scripts/eww_switch.sh notifications"
+    },
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-full": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        //"format-alt": "{time} {icon}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""],
+	"on-update": "$HOME/bin/scripts/battery-notify.sh",
+	"interval": 10,
+	"on-click": "$HOME/.config/eww/scripts/eww_switch.sh battery",
+	"tooltip": false
+    },
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "({signalStrength}%) ",
+        "format-ethernet": "{ipaddr}/{cidr} ",
+        "tooltip-format": "{essid}",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        //"format-alt": "{ifname}: {ipaddr}/{cidr}",
+	"on-click": "$HOME/.config/eww/scripts/eww_switch.sh network",
+	"tooltip": false
+    },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        //"format": "{volume}% {icon} {format_source}",
+        //"format-bluetooth": "{volume}% {icon} {format_source}",
+        //"format-bluetooth-muted": " {icon} {format_source}",
+        //"format-muted": "{volume}%  {format_source}",
+        //"format-source": "{volume}% ",
+        //"format-source-muted": "",
+
+   	"format": "{icon}",
+	"format-bluetooth": "{icon}",
+	"format-bluetooth-muted": "{icon}",
+	"format-muted": "",
+	"tooltip": false,
+
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "$HOME/.config/eww/scripts/eww_switch.sh audio"
+    },
+    "custom/media": {
+        "format": "{icon} {text}",
+        "return-type": "json",
+        "max-length": 40,
+        "format-icons": {
+            "spotify": "",
+            "default": "🎜"
+        },
+        "escape": true,
+        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+    },
+    "custom/power": {
+        "format" : "⏻",
+        "exec" : "echo ⏻",
+	"on-click": "wlogout",
+	"exec-if": "true",
+	"tooltip": false
+    },
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "hyprctl dispatch workspace {id}",
+	"active-only": false
+    },
+    "custom/keyboard": {
+        "format": "{}",
+        "exec": "$HOME/bin/scripts/toggle_keyboard.sh status | grep -q running && echo '⌨️ ON' || echo '⌨️ OFF'",
+        "interval": 2,
+        "on-click": "$HOME/bin/scripts/toggle_keyboard.sh toggle",
+        "tooltip": "false",
+        "tooltip-format": "Virtual Keyboard: {}",
+        "exec-tooltip": "$HOME/bin/scripts/toggle_keyboard.sh status",
+	"exec-if": "$HOME/bin/scripts/tablet-mode.sh"
+    },
+    "custom/launcher": {
+        "format": "{}",
+        "tooltip": "false",
+        "on-click": "ulauncher",
+	"exec": "echo Ulauncher",
+	"interval": 2,
+	"exec-if": "$HOME/bin/scripts/tablet-mode.sh"
+    },
+    "custom/close-window": {
+        "format": "{}",
+        "tooltip": "false",
+        "on-click": "hyprctl dispatch killactive",
+	"exec": "echo Close",
+	"interval": 2,
+	"exec-if": "$HOME/bin/scripts/tablet-mode.sh"
+    }
+}

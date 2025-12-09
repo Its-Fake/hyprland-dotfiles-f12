@@ -1,0 +1,95 @@
+;; widgets/network.yuck
+
+;; Polls the main Python script every 5 seconds to get all network data
+(defpoll network_data :interval "1s" "python3 /home/timo/.config/eww/scripts/get_network_status.py")
+
+(defwidget network-panel []
+  (box :class "network-panel" :orientation "v" :space-evenly false
+    
+    ;; ## HEADER SECTION ##
+    ;; Contains the title and the airplane mode toggle
+    (box :class "network-header"
+      (label :text "Networks" :halign "start")
+      (button :class "airplane-toggle ${network_data.airplane_mode}" 
+              :onclick "/home/timo/.config/eww/scripts/toggle_airplane.sh"
+              " ${network_data.airplane_mode == 'true' ? 'On' : 'Off'}"
+      )
+    )
+
+    ;; ## WI-FI SECTION ##
+    (box :class "network-section" :orientation "v" :space-evenly false
+      (box :class "section-header" :orientation "h"
+        (label :text "Wi-Fi" :halign "start")
+
+        (box :orientation "h" :space-evenly true :class "buttons"
+
+          (button :onclick "/home/timo/.config/eww/scripts/wifi_toggle.sh" 
+                  :class "wifi-toggle-button"
+                  " ${network_data.wifi_on ? 'On' : 'Off'}"
+          )
+
+          (button :class "refresh-button"
+                  :onclick "/home/timo/.config/eww/scripts/rescan_wifi.sh" 
+                  ;:onclick "python3 /home/timo/.config/eww/scripts/get_network_status.py"
+                  "󰑐"
+          )
+        )
+      )
+      
+      ;; Universal Connection Display: Shows the primary active connection (LAN or Wi-Fi)
+      (box :class "current-connection" 
+           :orientation "h" 
+           :space-evenly false
+           :visible {network_data.primary_connection_name != ""}
+        ;; Shows a different icon based on connection type
+        (label :class "connection-icon" 
+               :text {network_data.primary_connection_type == "ethernet" ? "󰈀 " : " "}
+        )
+        (label :text "Connected: ${network_data.primary_connection_name}"
+               :truncate true
+               :tooltip {network_data.primary_connection_name}
+        )
+      )
+             
+      ;; Scrollable list of available Wi-Fi networks
+      (scroll :vscroll true :class "wifi-list" :vexpand true
+        (box :orientation "v" :spacing 8 :space-evenly false
+          (label :text "Available Networks:" :class "section-subheader" :halign "start")
+          (for net in "${network_data.wifi_networks}"
+            (button :class "entry" :onclick "/home/timo/.config/eww/scripts/wifi_connect.sh '${net.ssid}'"
+              (box :orientation "h" :space-evenly false
+                (label :text {net.security ? "" : ""} :class "wifi-security-icon")
+                (label :text {net.ssid} :halign "start")
+                (box :hexpand true)
+                (label :text "${net.signal}%" :halign "end")
+              )
+            )
+          )
+        )
+      )
+    )
+                
+    ;; ## VPN SECTION ##
+    (box :class "network-section vpn-section" :orientation "v" :space-evenly false
+      (box :class "section-header"
+        (label :text "VPN")
+      )
+      
+      ;; Scrollable list for all WireGuard VPN connections
+      (scroll :vscroll true :class "vpn-list" :vexpand true
+        (box :orientation "v" :spacing 8 :space-evenly false
+          ;; Loops through the "vpns" list from the Python script
+          (for vpn in "${network_data.vpns}"
+            (button :class "entry" :orientation "h" :onclick "/home/timo/.config/eww/scripts/toggle_vpn.sh '${vpn.name}'"
+              (box :orientation "h" :space-evenly false
+                (label :text {vpn.name} :halign "start")
+                (box :hexpand true)
+                (label :text {vpn.is_active ? "Verbunden" : "Getrennt"})
+              ) 
+            )
+          )
+        )
+      )
+    )
+  )
+)

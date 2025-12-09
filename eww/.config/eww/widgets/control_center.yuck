@@ -1,0 +1,48 @@
+
+(defvar cc_view "battery") ; Standard-Tab
+
+
+(defwidget control-center []
+  (box :class "control-center" :orientation "v" :space-evenly false
+    ;; Horizontal Tab Bar at the top
+    (box :class "cc-tabs" :orientation "h" :space-evenly true :spacing 2 :valign "start" :height 65
+      (button :class "cc-tab ${cc_view == 'battery' ? 'active' : ''}" 
+              :onclick "eww update cc_view='battery'" 
+              :tooltip "Battery"
+              (label :text "")
+      )
+      (button :class "cc-tab ${cc_view == 'network' ? 'active' : ''}" 
+              :onclick "eww update cc_view='network'" 
+              :tooltip "Network"
+              (label :text "󰖩")
+      )
+      (button :class "cc-tab ${cc_view == 'audio' ? 'active' : ''}" 
+              :onclick "eww update cc_view='audio'" 
+              :tooltip "Audio"
+              (label :text "󰕾")
+      )
+      (button :class "cc-tab ${cc_view == 'notifications' ? 'active' : ''}" 
+              :onclick "eww update cc_view='notifications'" 
+              :tooltip "Notifications"
+              (label :text "󰂚")
+      )
+    )
+    ;; Panel-Wechsel - nur ein Panel gleichzeitig sichtbar
+    (box :class "cc-content"
+      (stack :selected {cc_view == "notifications" ? 0 : cc_view == "audio" ? 1 : cc_view == "network" ? 2 : cc_view == "battery" ? 3 : 0}
+             :transition "none"
+        (notifications-panel) ;; Dies verwendet jetzt die importierte Definition
+        (audio-panel)
+        (network-panel)
+        (battery-panel)
+      )
+    )
+  )
+)
+
+(defwindow control_center
+  :geometry (geometry :anchor "top right" :x "10px" :y "10px" :width "350px" :height "945px")
+  :stacking "overlay"
+  :monitor 0
+  (control-center)
+)

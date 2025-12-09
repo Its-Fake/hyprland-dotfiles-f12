@@ -1,0 +1,55 @@
+#
+# dunstrc - Konfiguriert nach der bereitgestellten Dokumentation
+#
+
+[global]
+    # -------- Positionierung (oben-mittig) --------
+    # Der Ursprung der Benachrichtigungen.
+    origin = top-left
+
+    # Die Breite der Benachrichtigungsfenster (minimum, maximum)
+    width = (0, 300)
+
+    # die Höhe der Benachrichtigung (minimum, maximum)
+    height = (0, 300)
+
+    # Der Abstand vom Ursprung (horizontal, vertikal).
+    offset = (10, 10)
+
+    # Textausrichtung innerhalb der Benachrichtigung.
+    alignment = center
+
+    notification_limit = 23
+
+    # -------- Allgemeines Verhalten --------
+    # Auf welchem Monitor die Benachrichtigungen erscheinen sollen (0 = primär).
+    # Wird von 'follow' überschrieben, falls gesetzt.
+    monitor = eDP-1
+
+    # Benachrichtigungen nach Dringlichkeit sortieren.
+    sort = true
+
+    # Text umbrechen, wenn er zu lang ist.
+    word_wrap = yes
+
+    # -------- Erscheinungsbild --------
+    # Schriftart und Größe.
+    font = Monospace 10
+
+    # Format der Benachrichtigung (%s = Titel, %b = Text).
+    format = "<b>%s</b>\n%b"
+
+    # Rahmenbreite um die Benachrichtigung.
+    frame_width = 2
+ 
+    corner_radius = 10
+
+    # Höhe der Trennlinie zwischen Benachrichtigungen.
+    separator_height = 2
+
+    # size of gap to display between notifications
+    gap_size = 5
+
+    # Innerer Abstand (Padding).
+    padding = 8
+    horizontal_padding = 8 

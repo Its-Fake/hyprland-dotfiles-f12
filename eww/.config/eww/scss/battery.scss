@@ -1,0 +1,57 @@
+
+@import '/home/timo/.cache/wal/colors.scss';
+
+.power-panel {
+  padding: 8px;
+}
+
+.battery-section {
+  background-color: rgba($color8, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 6px 0;
+}
+
+.battery-buttons {
+  padding: 3px;
+  margin: 5px;
+  border-radius: 12px;
+
+  background: rgba($color5, 0.2);
+    border: none;
+    box-shadow: none;
+    border-radius: 12px;
+    color: $foreground;
+    
+  &:hover {
+    background-color: rgba($color9, 0.4);
+  }
+
+  &.active {
+    background-color: rgba($color1, 0.4);
+    color: $foreground;
+  }
+
+}
+
+.screen-footer {
+  margin-top: 470px;
+  padding: 10px 4px;
+  border-top: 1px solid rgba($color8, 0.3);
+  color: $color5;
+
+  .screen-buttons {
+    padding: 5px;
+    margin: 5px;
+    background: rgba($color1, 0.2);
+    border: none;
+    border-radius: 12px;
+    box-shadow: none;
+    text-shadow: none;
+
+    &:hover {
+      background: rgba($color1, 0.3);
+      color: $color1;
+    }
+  }
+}

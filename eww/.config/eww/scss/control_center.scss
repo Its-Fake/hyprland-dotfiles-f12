@@ -1,0 +1,70 @@
+@import '/home/timo/.cache/wal/colors.scss';
+
+window#control_center {
+  background: transparent;
+}
+
+// Control Center Styles
+.control-center {
+  background: rgba(red($background), green($background), blue($background), 0.95);
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: none;
+  text-shadow: none;
+  border: none;
+}
+
+.cc-tabs {
+  margin: 12px 8px;
+  padding: 8px;
+  background: rgba(red($color8), green($color8), blue($color8), 0.1);
+
+  border-radius: 12px;
+  border: 1px solid rgba(red($color8), green($color8), blue($color8), 0.3);
+}
+
+.cc-tab {
+  //height: 10px;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 12px;
+  padding: 0px;
+  color: $color7;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-shadow: none;
+  
+  
+  &:hover {
+    background: rgba(red($color1), green($color1), blue($color1), 0.2);
+    color: $color1;
+    box-shadow: 0 2px 8px rgba(red($color1), green($color1), blue($color1), 0.3);
+  }
+  
+  &.active {
+    background: $color1;
+    color: rgba(black, 1);
+    box-shadow: 0 2px 12px rgba(red($color1), green($color1), blue($color1), 0.4);
+  }
+}
+
+.cc-content {
+  min-height: 840px;
+  padding: 8px;
+}
+
+// Panel placeholder styling
+.panel-placeholder {
+  min-height: 400px;
+  background: rgba(red($color8), green($color8), blue($color8), 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(red($color8), green($color8), blue($color8), 0.3);
+  
+  label {
+    color: $color6;
+    font-size: 14px;
+    font-style: italic;
+  }
+}

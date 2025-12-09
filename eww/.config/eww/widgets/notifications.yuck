@@ -1,0 +1,61 @@
+;; FRAGT DEN "PAUSED" STATUS VON DUNST AB (GIBT "true" ODER "false" ZURÜCK)
+(defpoll dunst_paused :interval "1s" "dunstctl is-paused")
+
+(defpoll notification_data :interval "1s"
+  "python3 /home/timo/.config/eww/scripts/dunst_eww_notifications.py") 
+
+(defwidget notification-widget [notif]
+  (box :class "notification-card ${notif.urgency}" :orientation "v" :space-evenly false
+    (box :orientation "h" :space-evenly false :spacing 12
+      (box :orientation "v" :space-evenly false :hexpand true
+
+        (box :class "notification-header" :orientation "h" :space-evenly false
+          (label :class "notification-summary" 
+                  :text {notif.summary} 
+                  :halign "start" 
+                  :wrap true
+                  :justify "left"
+                  :xalign 0
+          )
+                  
+          (box :hexpand true)
+          
+          (label :class "notification-time" 
+                  :text {notif.time})
+        )
+
+        (label :class "notification-body" :text "${notif.body}" :halign "start" :wrap true)
+
+        (box :class "notification-actions"
+          (button :onclick "dunstctl history-rm '${notif.id}'" "Close"))
+      )
+    )
+  )
+)
+;; DAS HAUPT-PANEL
+(defwidget notifications-panel []
+  (box :class "notifications-panel" :orientation "v" :space-evenly false :vexpand true
+    (box :class "notifications-header"
+      (label :text "Notifications" :halign "start")
+      (button :class "clear-all-button" :onclick "dunstctl history-clear" "Clear All")
+    )
+
+    (scroll :vscroll true :class "notification-list" :vexpand true
+      (box :orientation "v" :space-evenly false :spacing 8
+
+        (for notif in "${notification_data.notifications}"
+          (notification-widget :notif "${notif}")
+        )
+      )
+    )
+          
+    (box :class "notifications-footer"
+      (label :text "${notification_data.notification_count} notifications")
+      (button :class "silence-button ${dunst_paused ? 'active' : ''}" 
+              :onclick "dunstctl set-paused toggle" 
+	            :height 25
+              {dunst_paused == "true" ? "Silence on" : "Silence off"}
+      )
+    )
+  )
+)

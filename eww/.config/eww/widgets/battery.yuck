@@ -1,0 +1,117 @@
+(defpoll power_data :interval "1s" "python3 /home/timo/.config/eww/scripts/get_power_status.py")
+(defpoll clipboard_history :interval "1s" "python3 /home/timo/.config/eww/scripts/get_clipboard.py")
+
+(defwidget metric [label value ?onchange ?onclick]
+  (box :orientation "h"
+       :class "metric"
+       :space-evenly false
+       :spacing 10
+    
+    (button :onclick onclick
+            :class "metric-icon"
+            label)
+
+    (box :hexpand true
+      (scale :min 0 
+             :max 100
+             :active {onchange != ""}
+             :value value
+             :onchange onchange
+             :class "scale"
+      )
+    )
+  )
+)
+
+(defwidget battery-panel []
+  (box :class "battery-panel" :orientation "v" :space-evenly false
+
+
+    (box :class "battery-section" :orientation "v" :space-evenly false
+      ;; ## BRIGHTNESS SECTION ##
+      (box :class "header-section" :orientation "v"
+        (label :text "Screen" :class "section-header" :halign "start")
+        (metric :label "󰃠"
+                :value {power_data.brightness}
+                :onchange "brightnessctl set {}%" 
+        )
+      )
+
+      ;; ## IDLE & NIGHT LIGHT & ROTATE TOGGLES ##
+      (box :class "power-section toggles-section" :orientation "v" :space-evenly true
+	      (box :orientation "h"
+          (button :class "battery-buttons" ;;${power_data.is_idle_paused ? 'active' : ''}"
+                :onclick "/home/timo/bin/scripts/toggle_idle.sh"
+                "${power_data.is_idle_paused ? ' Idle paused' : '  Idle active'}" 
+          )
+ 
+          (button :class "battery-buttons" ;;${power_data.is_night_light_on ? 'active' : ''}"
+                :onclick "/home/timo/.config/eww/scripts/toggle_night_light.sh"
+                "󰌵 Night Shift ${power_data.is_night_light_on ? 'On' : 'Off'}"
+          )
+        )
+        (button :class "battery-buttons"
+                :onclick "/home/timo/.config/eww/scripts/toggle_fixx.sh"
+		            :halign "center"
+		            :width 175
+		            "${power_data.rotation_active ? 'Rotate On' : 'Rotate Off'}" 
+        )
+      )
+    )
+               
+    ;; ## POWER PROFILES ##
+    (box :class "battery-section" :orientation "v" :space-evenly false
+      (box :class "header-section" :orientation "v" :space-evenly false
+        (label :text "Energy mode" :class "section-header" :halign "start")
+        (box :class "power-profiles-container" :orientation "v" :space-evenly false
+          (box :orientation "h" 
+            (button :class "battery-buttons ${power_data.power_profile == 'power-saver' ? 'active' : ''}"
+                  :onclick "/home/timo/.config/eww/scripts/set_power.sh power-saver"
+                  "󰾆 Energy saving"
+            )
+            (button :class "battery-buttons ${power_data.power_profile == 'performance' ? 'active' : ''}"
+                  :onclick "/home/timo/.config/eww/scripts/set_power.sh performance"
+                  "󰓅 Performance"
+            )
+          )
+          (button :class "battery-buttons ${power_data.power_profile == 'balanced' ? 'active' : ''}"
+		              :onclick "home/timo/.config/eww/scripts/set_power.sh balanced"
+                  :halign "center"
+                  :width 175
+                  "Balanced"
+          )
+        )
+      )
+    )
+
+    ;; ## CLIPBOARD LIST ##
+    ; (box :orientation "v" :space-evenly false :class "clipboard-box"
+    ;   (label :text "Clipboard History" :class "header")
+    ;   (scroll :hscroll false :vscroll true :height 300
+    ;     (box :orientation "v" :spacing 5
+    ;       (for entry in clipboard_history
+    ;         (button :class "clip-item"
+    ;                 :onclick "cliphist decode ${entry.id} | wl-copy"
+    ;         (label :text "${entry.content}" :limit-width 40 :xalign 0)
+    ;         )
+    ;       )
+    ;     )
+    ;   )
+    ; )
+
+    ;; ## SCREENSHOT SECTION ##
+    (box :orientation "h" :class "screen-footer"
+      (button :class "screen-buttons"
+              :onclick "/home/timo/.config/eww/scripts/take_screen.sh window"
+              :height 25
+              " Window Shot"
+      )
+      (button :class "screen-buttons"
+              :onclick "/home/timo/.config/eww/scripts/take_screen.sh region"
+              :height 25
+              " Region Shot"
+      )
+    )
+
+  )
+)

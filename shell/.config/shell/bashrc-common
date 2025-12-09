@@ -1,0 +1,145 @@
+###############################################################################
+# Gemeinsame Bash-Konfiguration (User + root)
+###############################################################################
+
+# Nur für interaktive Shells
+[[ $- != *i* ]] && return
+
+###############################################################################
+# Pywal Farben (falls vorhanden)
+###############################################################################
+if [ -f "$HOME/.cache/wal/colors.sh" ]; then
+    . "$HOME/.cache/wal/colors.sh"
+fi
+
+###############################################################################
+# Prompt mit dynamischem $ / # über \$
+###############################################################################
+# Grün: >   Blau: Pfad   Dann $ oder #
+PS1='\[\033[01;32m\]>\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \$ '
+
+###############################################################################
+# Aliases
+###############################################################################
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+# clear + fastfetch nur, wenn fastfetch existiert (sonst nur clear)
+alias clear='command clear; command -v fastfetch >/dev/null 2>&1 && fastfetch'
+alias open='xdg-open'
+
+###############################################################################
+# PATH-Erweiterun und Wayland Environment Variablen
+###############################################################################
+export PATH="$HOME/.local/bin:$PATH"
+
+export XDG_SESSION_TYPE=wayland
+export GDK_BACKEND=wayland
+export QT_QPA_PLATFORM=wayland
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+
+###############################################################################
+# FZF / FD gestützte Helfer
+# Deine Originalfunktionen, leicht DRY + robust (Fallback auf find).
+###############################################################################
+# Interne Hilfsfunktion: alle Dateien unter $HOME (inkl. hidden), fd oder find
+__ff_list_files() {
+    if command -v fd >/dev/null 2>&1; then
+        fd . "$HOME" --type f --hidden --follow 2>/dev/null
+    else
+        # find-Fallback: versteckte einschließen, .git ausschließen
+        find "$HOME" -type f ! -path '*/.git/*' 2>/dev/null
+    fi
+}
+
+# Interne Hilfsfunktion: alle Verzeichnisse
+__ff_list_dirs() {
+    if command -v fd >/dev/null 2>&1; then
+        fd . "$HOME" --type d --hidden --follow 2>/dev/null
+    else
+        find "$HOME" -type d ! -path '*/.git/*' 2>/dev/null
+    fi
+}
+
+# Allgemeine Datei-Auswahl + Kommando ausführen
+ff_files() {
+    command -v fzf >/dev/null 2>&1 || { echo "fzf nicht installiert"; return 1; }
+    local cmd=$1; shift
+    local file
+    file=$(__ff_list_files | fzf --height 40% --reverse --border) || return 1
+    [ -n "$file" ] || return 1
+    "$cmd" "$file" "$@"
+}
+
+# Allgemeine Verzeichnis-Auswahl + Kommando ausführen
+ff_dirs() {
+    command -v fzf >/dev/null 2>&1 || { echo "fzf nicht installiert"; return 1; }
+    local cmd=$1; shift
+    local dir
+    dir=$(__ff_list_dirs | fzf --height 40% --reverse --border) || return 1
+    [ -n "$dir" ] || return 1
+    "$cmd" "$dir" "$@"
+}
+
+# Kurzbefehle für Dateien
+vimf()  { ff_files vim "$@"; }
+catf()  { ff_files cat "$@"; }
+batf()  { command -v bat >/dev/null 2>&1 || { echo "bat nicht installiert"; return 1; }; ff_files bat "$@"; }
+openf() { ff_files xdg-open "$@"; }
+
+# Kurzbefehle für Verzeichnisse
+cdf() { ff_dirs cd "$@"; }
+lsf() { ff_dirs ls "$@"; }
+
+# Kopieren (Datei/Verzeichnis an Ziel-Verzeichnis auswahl)
+cpf() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: cpf <source>"
+        return 1
+    fi
+    local src="$1"
+    [ -e "$src" ] || { echo "Quelle nicht gefunden: $src"; return 1; }
+    command -v fzf >/dev/null 2>&1 || { echo "fzf nicht installiert"; return 1; }
+    local dest
+    dest=$(__ff_list_dirs | fzf --height 40% --reverse --border) || return 1
+    [ -n "$dest" ] || return 1
+    cp -r -- "$src" "$dest"
+}
+
+# Verschieben
+mvf() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: mvf <source>"
+        return 1
+    fi
+    local src="$1"
+    [ -e "$src" ] || { echo "Quelle nicht gefunden: $src"; return 1; }
+    command -v fzf >/dev/null 2>&1 || { echo "fzf nicht installiert"; return 1; }
+    local dest
+    dest=$(__ff_list_dirs | fzf --height 40% --reverse --border) || return 1
+    [ -n "$dest" ] || return 1
+    mv -- "$src" "$dest"
+}
+
+# Verzeichnis löschen (mit fzf + Bestätigung)
+rmd() {
+    command -v fzf >/dev/null 2>&1 || { echo "fzf nicht installiert"; return 1; }
+    local dir
+    dir=$(__ff_list_dirs | fzf --height 40% --reverse --border) || return 1
+    [ -n "$dir" ] || { echo "Nichts gewählt."; return 1; }
+    read -rp "Verzeichnis '$dir' wirklich löschen? [y/N] " confirm
+    [[ "$confirm" =~ ^[Yy]$ ]] || { echo "Abgebrochen."; return 1; }
+    rm -r -- "$dir"
+    echo "Gelöscht: $dir"
+}
+
+# Datei löschen (mit fzf + Bestätigung)
+rmf() {
+    command -v fzf >/dev/null 2>&1 || { echo "fzf nicht installiert"; return 1; }
+    local file
+    file=$(__ff_list_files | fzf --height 40% --reverse --border) || return 1
+    [ -n "$file" ] || { echo "Nichts gewählt."; return 1; }
+    read -rp "Datei '$file' wirklich löschen? [y/N] " confirm
+    [[ "$confirm" =~ ^[Yy]$ ]] || { echo "Abgebrochen."; return 1; }
+    rm -- "$file"
+    echo "Gelöscht: $file"
+}

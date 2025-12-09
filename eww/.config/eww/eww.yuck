@@ -1,0 +1,5 @@
+(include "./widgets/battery.yuck")
+(include "./widgets/audio.yuck")
+(include "./widgets/network.yuck")
+(include "./widgets/notifications.yuck")
+(include "./widgets/control_center.yuck")
