@@ -9,8 +9,6 @@ networkmanager
 iwd
 bluez
 bluez-utils
-sudo
-git
 pacman-contrib
 
 # --- HYPRLAND CORE ---
