@@ -1,0 +1,71 @@
+# --- BASIS & KERNEL ---
+base
+base-devel
+linux
+linux-firmware
+linux-headers
+intel-ucode
+networkmanager
+iwd
+bluez
+bluez-utils
+sudo
+git
+pacman-contrib
+
+# --- HYPRLAND CORE ---
+hyprland
+hypridle
+hyprlock
+hyprpaper
+xdg-desktop-portal-hyprland
+qt5-wayland
+qt6-wayland
+polkit-gnome
+hyprpolkitagent
+
+# --- AUDIO & VIDEO ---
+pipewire
+pipewire-alsa
+pipewire-pulse
+wireplumber
+pavucontrol
+intel-media-driver
+vulkan-intel
+
+# --- TOOLS & TERMINAL ---
+kitty
+fastfetch
+btop
+fzf
+zoxide
+bat
+vim
+nano
+wget
+unzip
+stow
+libnotify
+dunst
+wl-clipboard
+hyprshot
+
+# --- APPS & GUI ---
+firefox
+thunar
+gvfs
+thunar-archive-plugin
+file-roller
+gparted
+gnome-disk-utility
+mpv
+loupe
+gnome-calculator
+gnome-text-editor
+
+# --- FONTS & LOOKS ---
+ttf-font-awesome
+ttf-nerd-fonts-symbols-mono
+noto-fonts
+noto-fonts-emoji
+nwg-look
