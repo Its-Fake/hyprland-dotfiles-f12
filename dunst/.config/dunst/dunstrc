@@ -57,19 +57,19 @@
 # Sie enthält die Farbdefinitionen für Dunst.
 
 [urgency_low]
-    background = "#0F1E25"
-    foreground = "#dceabf"
-    frame_color = "#9aa385"
+    background = "#051215"
+    foreground = "#adbbb8"
+    frame_color = "#798280"
     timeout = 5
 
 [urgency_normal]
-    background = "#0F1E25"
-    foreground = "#dceabf"
-    frame_color = "#8FBA7A"
+    background = "#051215"
+    foreground = "#adbbb8"
+    frame_color = "#54A340"
     timeout = 10
 
 [urgency_critical]
-    background = "#3F8D62"
-    foreground = "#dceabf"
-    frame_color = "#3F8D62"
+    background = "#396658"
+    foreground = "#adbbb8"
+    frame_color = "#396658"
     timeout = 0

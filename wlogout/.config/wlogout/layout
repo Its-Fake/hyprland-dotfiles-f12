@@ -18,7 +18,7 @@
 }
 {
     "label" : "shutdown",
-    "action" : "sudo /home/timo/bin/scripts/timeshift-daily.sh",
+    "action" : "sudo /home/timo/bin/scripts/timeshift.sh",
     "text" : "Shutdown",
     "keybind" : "s"
 }
