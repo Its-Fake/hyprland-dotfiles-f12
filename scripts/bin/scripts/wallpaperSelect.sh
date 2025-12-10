@@ -2,12 +2,9 @@
 ## inspired from https://github.com/JaKooLit 💫 ##
 # This script for selecting wallpapers (SUPER W)
 
-#!/usr/bin/env bash
-## inspired from https://github.com/JaKooLit 💫 ##
-# This script for selecting wallpapers (SUPER W)
-
 # Ordner mit Wallpapers
-wallpaperDir="${1:-$HOME/Bilder/wallpaper}"
+RAW_PATH="${1:-$HOME/Bilder/wallpaper}"
+wallpaperDir="$(realpath "$RAW_PATH")"
 themesDir="$HOME/.config/rofi/themes"
 
 # swww-Übergangsparameter
@@ -18,8 +15,14 @@ BEZIER="0.4,0.2,0.4,1.0"
 SWWW_PARAMS="--transition-fps ${FPS} --transition-type ${TYPE} --transition-duration ${DURATION} --transition-bezier ${BEZIER}"
 
 # Bilder und Ordner finden
-mapfile -t DIRS < <(find "$wallpaperDir" -maxdepth 1 -mindepth 1 -type d | sort)
-mapfile -t PICS < <(find "$wallpaperDir" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" \) | sort)
+mapfile -t DIRS < <(find -L "$wallpaperDir" -maxdepth 1 -mindepth 1 -type d | sort)
+mapfile -t PICS < <(find -L "$wallpaperDir" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" \) | sort)
+
+if [ ${#PICS[@]} -eq 0 ]; then
+    echo "Fehler: Keine Bilder in $wallpaperDir gefunden!"
+    notify-send "Wallpaper Error" "Keine Bilder in $wallpaperDir gefunden."
+    exit 1
+fi
 
 # Random Wahl vorbereiten
 randomPicture="${PICS[$RANDOM % ${#PICS[@]}]}"
@@ -53,7 +56,7 @@ menu() {
     [[ "$(realpath "$wallpaperDir")" != "$(realpath "$HOME/Bilder/wallpaper")" ]] && printf "%s\n" "$backChoice"
     printf "%s\n" "$randomChoice"
     for d in "${DIRS[@]}"; do
-        printf "[%s]\x00icon\x1f%s\n" "$(basename "$d")" "/usr/share/icons/breeze-dark/places/48/folder-grey.svg"
+        printf "[%s]\x00icon\x1f%s\n" "$(basename "$d")" "/usr/share/icons/Adwaita/scalable/places/folder.svg"
     done
     for img in "${PICS[@]}"; do
         printf "%s\x00icon\x1f%s\n" "$(basename "$img" | cut -d. -f1)" "$img"
