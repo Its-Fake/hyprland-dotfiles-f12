@@ -85,12 +85,24 @@ fi
 # -------------------------
 # Eww Neu starten
 # ------------------------
-if pgrep eww &>/dev/null; then
+if pgrep -x eww-daemon >/dev/null || pgrep -x eww >/dev/null; then
     echo "Aktualisiere Eww..." | tee -a "$LOGFILE"
     
     # Liste aller aktuell geöffneten Fenster in einer Variable speichern
-    open_windows=$(eww list-windows)
+    open_windows=$(eww active-windows)
     echo "Aktuell geöffnete Eww-Fenster: $open_windows" | tee -a "$LOGFILE"
+
+    # Daemon sauber beenden
+    echo "Stoppe Eww Daemon..." | tee -a "$LOGFILE"
+    eww kill
+    sleep 0.5
+
+    # Daemon explizit neu starten
+    echo "Starte Eww Daemon neu..." | tee -a "$LOGFILE"
+    eww daemon --no-daemonize >> "$LOGFILE" 2>&1 &
+
+    # warten bis daemon bereit
+    sleep 1
     
     # Konfiguration neu laden (wendet die neuen Farben an)
     eww reload >> "$LOGFILE" 2>&1
