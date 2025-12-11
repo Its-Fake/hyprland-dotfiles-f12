@@ -7,7 +7,7 @@
 </div>
 
 ### Chromium Pywal theme
-adapted from https://github.com/metafates/ChromiumPywal
+Adapted from https://github.com/metafates/ChromiumPywal
 1. Open chromium
 2. Go to chrome://extensions
 3. Turn on "Developer Mode" in the top right corner
@@ -17,8 +17,10 @@ adapted from https://github.com/metafates/ChromiumPywal
 Each time you change your wallpaper you have to load the extension again.
 
 ### Discord Pywal theme
-if you want your discord styled with pywal colors i recommend the following:
+If you want your discord styled with pywal colors i recommend the following:
 https://github.com/Vendicated/Vencord
 https://github.com/ZephyrCodesStuff/pywal-vencord
 
-I changed the wal theme a bit so the purple colors from discrod are away
+Create a symbolic link as follows: ln -s $HOME/.cache/wal/colors-discord.css $HOME/.config/vesktop/themes/pywal-vencord.theme.css (find the right path in discord vencord settings by opening the themes folder
+
+I changed the wal theme a bit so the purple colors from discord are away
