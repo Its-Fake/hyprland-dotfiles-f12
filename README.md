@@ -15,3 +15,10 @@ adapted from https://github.com/metafates/ChromiumPywal
 5. Select "Pywal" (by default) in the same folder with the script
 
 Each time you change your wallpaper you have to load the extension again.
+
+### Discord Pywal theme
+if you want your discord styled with pywal colors i recommend the following:
+https://github.com/Vendicated/Vencord
+https://github.com/ZephyrCodesStuff/pywal-vencord
+
+I changed the wal theme a bit so the purple colors from discrod are away
