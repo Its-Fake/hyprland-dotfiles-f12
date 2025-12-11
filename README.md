@@ -18,9 +18,10 @@ Each time you change your wallpaper you have to load the extension again.
 
 ### Discord Pywal theme
 If you want your discord styled with pywal colors i recommend the following:
-https://github.com/Vendicated/Vencord
+https://github.com/Vendicated/Vencord  
+
 https://github.com/ZephyrCodesStuff/pywal-vencord
 
-Create a symbolic link as follows: ln -s $HOME/.cache/wal/colors-discord.css $HOME/.config/vesktop/themes/pywal-vencord.theme.css (find the right path in discord vencord settings by opening the themes folder
+Create a symbolic link as follows: ln -s $HOME/.cache/wal/colors-discord.css $HOME/.config/vesktop/themes/pywal-vencord.theme.css (find the right path in discord vencord settings by opening the themes folder)
 
 I changed the wal theme a bit so the purple colors from discord are away
