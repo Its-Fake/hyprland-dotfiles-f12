@@ -25,13 +25,7 @@
           )
         )
 
-        (label :class "notification-body" 
-              :text "${notif.body}" 
-              :halign "start" 
-              :wrap true
-              :justify "left"
-              :xalign 0
-        )
+        (label :class "notification-body" :text "${notif.body}" :halign "start" :wrap true)
 
         (box :class "notification-actions"
           (button :onclick "dunstctl history-rm '${notif.id}'" "Close"))

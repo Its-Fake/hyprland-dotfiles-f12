@@ -47,6 +47,7 @@ libnotify
 dunst
 wl-clipboard
 hyprshot
+cliphist
 
 # --- APPS & GUI ---
 firefox
