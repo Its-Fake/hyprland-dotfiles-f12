@@ -34,8 +34,22 @@
 
 }
 
+.clip-items{
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 4px 8px;
+  border-radius: 18px;
+  transition: background-color 0.2s ease-in-out;
+  color: $color3;
+
+  &:hover {
+    background-color: rgba($color1, 0.2);
+    color: $color6;
+  } 
+}
+
 .screen-footer {
-  margin-top: 470px;
   padding: 10px 4px;
   border-top: 1px solid rgba($color8, 0.3);
   color: $color5;

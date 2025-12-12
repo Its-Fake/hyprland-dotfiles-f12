@@ -6,7 +6,7 @@ import re
 def get_history():
     try:
         # Holt die ersten 10 Einträge
-        result = subprocess.run("cliphist list | head -n 10", shell=True, capture_output=True, text=True).stdout.strip()
+        result = subprocess.run("cliphist list | head -n 50", shell=True, capture_output=True, text=True).stdout.strip()
     except Exception:
         print(json.dumps([]))
         return

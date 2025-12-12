@@ -1,6 +1,8 @@
 (defpoll power_data :interval "1s" "python3 /home/timo/.config/eww/scripts/get_power_status.py")
 (defpoll clipboard_history :interval "1s" "python3 /home/timo/.config/eww/scripts/get_clipboard.py")
 
+(defvar show_clipboard false)
+
 (defwidget metric [label value ?onchange ?onclick]
   (box :orientation "h"
        :class "metric"
@@ -62,7 +64,7 @@
     ;; ## POWER PROFILES ##
     (box :class "battery-section" :orientation "v" :space-evenly false
       (box :class "header-section" :orientation "v" :space-evenly false
-        (label :text "Energy mode" :class "section-header" :halign "start")
+        (label :text "Energy Mode" :class "section-header" :halign "start")
         (box :class "power-profiles-container" :orientation "v" :space-evenly false
           (box :orientation "h" 
             (button :class "battery-buttons ${power_data.power_profile == 'power-saver' ? 'active' : ''}"
@@ -84,23 +86,45 @@
       )
     )
 
-    ;; ## CLIPBOARD LIST ##
-    ; (box :orientation "v" :space-evenly false :class "clipboard-box"
-    ;   (label :text "Clipboard History" :class "header")
-    ;   (scroll :hscroll false :vscroll true :height 300
-    ;     (box :orientation "v" :spacing 5
-    ;       (for entry in clipboard_history
-    ;         (button :class "clip-item"
-    ;                 :onclick "cliphist decode ${entry.id} | wl-copy"
-    ;         (label :text "${entry.content}" :limit-width 40 :xalign 0)
-    ;         )
-    ;       )
-    ;     )
-    ;   )
-    ; )
+    ; ## CLIPBOARD LIST ##
+    (box :orientation "v" :space-evenly false :class "battery-section"
+  
+      ; Header / Button
+      (button :onclick "eww update show_clipboard=${!show_clipboard}" 
+              :class "header-section"
+        (box :orientation "h" :space-evenly false :class "section-header"
+          (label :text "Clipboard History" :halign "start")
+          (box :hexpand true)
+          (label :text {show_clipboard ? "▼" : "▶"}) 
+        )
+      )
+
+      ; Content
+      (revealer :transition "none"
+                :reveal show_clipboard
+                :duration "200ms"
+
+        (scroll :vscroll true :height 400 :vexpand true
+          (box :orientation "v" :spacing 10 :space-evenly false
+            (for entry in clipboard_history
+              (button :class "clip-items"
+                      :onclick "cliphist decode ${entry.id} | wl-copy"
+                (label :text "${entry.content}" 
+                       :halign "start" 
+                       :wrap true
+                       :justify "left"
+                       :xalign 0
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+
 
     ;; ## SCREENSHOT SECTION ##
-    (box :orientation "h" :class "screen-footer"
+    (box :orientation "h" :class "screen-footer" :style "margin-top: ${show_clipboard ? '7px' : '407px'};"
       (button :class "screen-buttons"
               :onclick "/home/timo/.config/eww/scripts/take_screen.sh window"
               :height 25
