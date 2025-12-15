@@ -16,6 +16,11 @@ Adapted from https://github.com/metafates/ChromiumPywal
 
 Each time you change your wallpaper you have to load the extension again.
 
+For Firefox / Thunderbird you can also use
+https://github.com/Frewacom/pywalfox
+
+(For Thunderbird it didnt work for me yet, i will try to fix it at some point)
+
 ### Discord Pywal theme
 If you want your discord styled with pywal colors i recommend the following:
 
