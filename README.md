@@ -19,8 +19,6 @@ Each time you change your wallpaper you have to load the extension again.
 For Firefox / Thunderbird you can also use
 https://github.com/Frewacom/pywalfox
 
-(For Thunderbird it didnt work for me yet, i will try to fix it at some point)
-
 ### Discord Pywal theme
 If you want your discord styled with pywal colors i recommend the following:
 
@@ -29,4 +27,10 @@ https://github.com/ZephyrCodesStuff/pywal-vencord
 
 Create a symbolic link as follows: ln -s $HOME/.cache/wal/colors-discord.css $HOME/.config/vesktop/themes/pywal-vencord.theme.css (find the right path in discord vencord settings by opening the themes folder)
 
-I changed the wal theme a bit so the purple colors from discord are away
+### ToDo
+- Thunderbird theme with https://github.com/Frewacom/pywalfox
+- Discord friend button is purple needs a fix
+- Notion with pywal colours with https://notion-enhancer.github.io/
+- File manager with pywal colours
+- wl-recorder for screen recordings
+- nvim config with pywal colours
