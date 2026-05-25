@@ -1,0 +1,119 @@
+/* scss/notifications.scss */
+@import '/home/timo/.cache/wal/colors.scss';
+
+// Das Haupt-Panel
+.notifications-panel {
+  padding: 4px 8px;
+}
+
+// Der Header mit Titel und "Alle löschen"-Button
+.notifications-header {
+  padding: 10px 4px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: $foreground;
+
+  .clear-all-button {
+    background: rgba($color1, 0.2);
+    color: $color5;
+    border-radius: 8px;
+    border: none;
+    box-shadow: none;
+    padding: 2px 10px;
+    font-size: 0.8em;
+
+    text-shadow: none;;
+    &:hover {
+      background: rgba($color1, 0.3);
+    }
+  }
+}
+
+// Die scrollbare Liste
+.notification-list {
+  padding: 8px 0;
+}
+
+// Die Karte für eine einzelne Benachrichtigung
+.notification-card {
+  background-color: rgba($color2, 0.4);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba($color8, 0.3);
+
+  // Spezieller Stil für dringende Benachrichtigungen
+  &.urgent {
+    background-color: rgba($color3, 0.6);
+    border: 1px solid rgba($color3, 0.8);
+  }
+}
+
+.notification-icon {
+  font-size: 28px;
+  color: $color7;
+  margin-top: 2px;
+}
+
+.notification-header {
+  margin-bottom: 4px;
+}
+
+.notification-summary {
+  font-weight: bold;
+  color: $foreground;
+  font-size: 1.1em;
+}
+
+.notification-time {
+  color: $color5;
+  font-size: 0.9em;
+}
+
+.notification-body {
+  color: $color6;
+}
+
+// Die Aktionen innerhalb einer Karte (z.B. "Close"-Button)
+.notification-actions {
+  margin-top: 10px;
+  
+  button {
+    background: rgba($color8, 0.2);
+    color: $foreground;
+    border: none;
+    box-shadow: none;
+    border-radius: 8px;
+    padding: 2px 10px;
+    
+    &:hover {
+      background-color: rgba($color9, 0.4);
+    }
+  }
+}
+
+// Der Footer mit Anzahl und "Silence"-Button
+.notifications-footer {
+  padding: 10px 4px;
+  border-top: 1px solid rgba($color8, 0.3);
+  color: $color5;
+
+  .silence-button {
+    //font-size: 1.1em;
+    color: $color5;
+    background: rgba($color1, 0.2);
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    text-shadow: none;
+    
+    // Klasse, die aktiv ist, wenn der Stumm-Modus an ist
+    &.active {
+      color: $color9; 
+    }
+
+    &:hover {
+      background: rgba($color1, 0.3);
+      color: $color1;
+    }
+  }
+}

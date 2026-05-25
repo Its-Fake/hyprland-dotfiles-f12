@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# copy this to /usr/local/bin, add the rights: sudo chown root:root, sudo chmod 755 and add in visudo: usr ALL=(ALL) NOPASSWD: /usr/local/bin/toggle_vpn2
+
+CON_NAME="$1"
+# Ermittle das Interface-Namen (bei WireGuard oft gleich dem Verbindungsnamen)
+INTERFACE="$CON_NAME"
+
+if [ -z "$CON_NAME" ]; then
+    exit 1
+fi
+
+if nmcli con show --active | grep -q "$CON_NAME"; then
+    # --- VPN AUSSCHALTEN ---
+    nmcli con down "$CON_NAME"
+    
+    # Killswitch deaktivieren: tabelle löschen
+    sudo nft delete table inet vpn_killswitch 2>/dev/null
+    
+else
+    # --- VPN EINSCHALTEN ---
+    
+    if nmcli con up "$CON_NAME"; then
+        
+        # Killswitch aktivieren (netzwerk nur über vpn zulassen)
+	ENDPOINT=$(sudo wg show "$CON_NAME" endpoints 2>/dev/null | awk '{print $2}' | cut -d: -f1)
+
+	#if [ -z "$ENDPOINT" ]; then
+    		#echo "DEBUG: Konnte IP nicht extrahieren. Prüfe nmcli Ausgabe manuell!"
+	#else
+    		#echo "DEBUG: IP gefunden: $ENDPOINT"
+	#fi
+
+        sudo nft add table inet vpn_killswitch
+        sudo nft flush table inet vpn_killswitch
+        
+        # Kette erstellen, die standardmäßig alles blockiert (Policy Drop)
+        sudo nft add chain inet vpn_killswitch filter { type filter hook output priority 0\; policy drop\; }
+        
+        # Ausnahmen hinzufügen:
+        # - Loopback (lokale Prozesse)
+        sudo nft add rule inet vpn_killswitch filter oifname "lo" accept
+        # - Traffic über das VPN-Interface
+        sudo nft add rule inet vpn_killswitch filter oifname "$INTERFACE" accept
+        # - Den Handshake zum VPN-Server erlauben (sonst bricht die Verbindung sofort ab)
+        if [ ! -z "$ENDPOINT" ]; then
+            sudo nft add rule inet vpn_killswitch filter ip daddr $ENDPOINT accept
+        fi
+    fi
+fi

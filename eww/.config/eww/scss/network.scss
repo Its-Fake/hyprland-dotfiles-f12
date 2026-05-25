@@ -1,0 +1,107 @@
+
+@import '/home/timo/.cache/wal/colors.scss';
+
+.network-panel {
+  padding: 4px 8px;
+}
+.network-header {
+  padding: 10px 4px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: $foreground;
+
+  .airplane-toggle {
+    background: rgba($color1, 0.2);
+    color: $color5;
+    border-radius: 8px;
+    border: none;
+    box-shadow: none;
+    padding: 2px 10px;
+    font-size: 0.8em;
+
+    text-shadow: none;;
+    &:hover {
+      background: rgba($color1, 0.3);
+    }
+  }
+}
+
+.network-section {
+  background-color: rgba($color8, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 6px 0;
+}
+.section-header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: $foreground;
+
+  .buttons{
+    font-size: 0.8em;
+    font-weight: normal;
+  }
+
+  .wifi-toggle-button {
+    background: rgba($color5, 0.2);
+    border: none;
+    box-shadow: none;
+    border-radius: 12px;
+    padding: 2px 10px;
+    margin-right: 2px;
+    
+    &:hover {
+      background-color: rgba($color9, 0.4);
+    }
+  }
+
+  .refresh-button {
+    background: rgba($color5, 0.2);
+    border: none;
+    box-shadow: none;
+    border-radius: 12px;
+    padding: 2px 10px;
+    margin-left: 2px;
+    
+    &:hover {
+      background-color: rgba($color9, 0.4);
+    }
+  }
+}
+
+.current-connection {
+  margin-bottom: 15px;
+  margin-top: 10px;
+  font-size: 1.1em;
+  color: $foreground;
+}
+
+.section-subheader {
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: $color6;
+}
+.wifi-list {
+  min-height: 400px; // Wichtig, damit die Liste Platz hat
+}
+.entry {
+  background-color: rgba($color2, 0.4);
+  border-radius: 8px;
+  color: $foreground;
+  padding: 4px;
+  border: 1px solid rgba($color8, 0.2);
+  
+  &:hover {
+    background: rgba($color5, 0.2);
+  }
+}
+.wifi-security-icon {
+  margin-right: 10px;
+}
+
+.vpn-list{
+  min-height: 210px; // Wichtig, damit die Liste Platz hat
+}
+

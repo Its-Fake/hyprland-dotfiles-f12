@@ -1,0 +1,135 @@
+;; Polls the main Python script every 3 seconds
+(defpoll audio_data :interval "1s" "python3 /home/timo/.config/eww/scripts/get_audio_status.py")
+
+(defwidget metric [label value ?onchange ?onclick]
+  (box :orientation "h"
+       :class "metric"
+       :space-evenly false
+       :spacing 10
+       ;;:hexpand true
+    
+    (button :onclick onclick
+            :class "metric-icon"
+            label)
+
+    (box :hexpand true
+      (scale :min 0 
+             :max 100
+             :active {onchange != ""}
+             :value value
+             :onchange onchange
+             :class "scale"
+      )
+    )
+  )
+)
+
+(defwidget audio-panel []
+  (box :class "audio-panel" :orientation "v" :space-evenly false
+    
+    ;; ## VOLUME SECTION ##
+    (box :class "audio-section" :orientation "v"
+      (label :text "Volume" :class "section-header" :halign "start")
+      
+      (metric :label "${audio_data.is_muted ? '󰸈' : '󰕾'}"
+              :onclick "pamixer -t" 
+              :value {audio_data.volume}
+              :onchange "/home/timo/.config/eww/scripts/set_volume.sh {}"
+      )
+      
+      (metric :label "${audio_data.source_is_muted ? '' : ''}"
+              :onclick "pamixer --default-source -t" 
+              :value {audio_data.source_volume}
+              :onchange "pamixer --default-source --set-volume {}"
+      )
+    )
+
+    ;; ## BLUETOOTH DEVICES ##
+    (box :class "audio-section" :orientation "v" :space-evenly false
+      (box :class "section-header"
+        (label :text "Bluetooth" :halign "start")
+        (box :hexpand true)
+        (button :class "refresh-button" 
+                :onclick "/home/timo/.config/eww/scripts/scan_bluetooth.sh" 
+                :tooltip "Nach neuen Geräten scannen"
+                "󰑐"
+        )
+      )
+      
+      (label :text "Paired Devices" :class "section-subheader" :halign "start")
+      (scroll :vscroll true :class "paired-list"
+        (box :orientation "v" :spacing 8 :space-evenly false
+          (for bt in "${audio_data.bluetooth_devices}"
+            (button :onclick "/home/timo/.config/eww/scripts/bluetooth_action.sh ${bt.is_connected ? 'disconnect' : 'connect'} '${bt.mac}'"
+                    :class "entry"
+              (box :orientation "h" :space-evenly false
+                (label :text {bt.name} :halign "start")
+                (box :hexpand true)
+                (label :text {bt.is_connected ? "Disconnect" : "Connect"})
+              )
+            )
+          )
+        )
+      ) 
+      
+      (label :text "Available Devices" :class "section-subheader" :halign "start")
+      (scroll :vscroll true :class "available-list"
+        (box :orientation "v" :spacing 8 :space-evenly false
+          (for bt_new in "${audio_data.discoverable_devices}"
+            (button :onclick "/home/timo/.config/eww/scripts/pair_bluetooth.sh '${bt_new.mac}'"
+                    :class "entry" 
+              (box :orientation "h" :space-evenly false
+                (label :text {bt_new.name} :halign "start")
+                (box :hexpand true)
+                (label :text "Pair")
+              )
+            )
+          )
+        )
+      )
+    )
+               
+    ;; ## OUTPUT DEVICES ##
+    (box :class "audio-section" :orientation "v" :space-evenly false
+      (label :text "Output Devices" :class "section-header" :halign "start")
+      ;; Add scroll widget with fixed height
+      (scroll :vscroll true :class "output-list"
+        (box :orientation "v" :spacing 8 :space-evenly false
+          (for sink in "${audio_data.sinks}"
+            (button :class "entry ${sink.is_active ? 'active' : ''}"
+                    :onclick "/home/timo/.config/eww/scripts/set_device.sh sink ${sink.id}"
+                    ;;{sink.description}
+              (label :text {sink.description}
+                 :wrap true
+                 :halign "start"
+                 :xalign 0
+                 :justify "center"
+              )
+            )
+          )
+        )
+      )
+    )
+
+    ;; ## INPUT DEVICES ##
+    (box :class "audio-section" :orientation "v" :space-evenly false
+      (label :text "Input Devices" :class "section-header" :halign "start")
+      (scroll :vscroll true :class "input-list"
+        (box :orientation "v" :spacing 8 :space-evenly false
+          (for source in "${audio_data.sources}"
+            (button :class "entry ${source.is_active ? 'active' : ''}"
+                    :onclick "/home/timo/.config/eww/scripts/set_device.sh source ${source.id}"
+                    ;;{source.description}
+              (label :text {source.description}
+                 :wrap true
+                 :halign "start"
+                 :xalign 0
+                 :justify "center"
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)

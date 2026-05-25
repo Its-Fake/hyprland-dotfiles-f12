@@ -1,0 +1,35 @@
+# Screenshots
+<div>
+  <img src="/screenshots/kitty+vscode.png" width="49%"> <img src="/screenshots/rofi+eww+dunst+waybar.png" width="49%">
+</div>
+<div>
+  <img src="screenshots/wallpaperselect.png" width="49%"> <img src="/screenshots/kitty.png" width="49%">
+</div>
+
+### Chromium Pywal theme
+Adapted from https://github.com/metafates/ChromiumPywal
+1. Open chromium
+2. Go to chrome://extensions
+3. Turn on "Developer Mode" in the top right corner
+4. Press "Load unpacked"
+5. Select "Pywal" (by default) in the same folder with the script
+
+Each time you change your wallpaper you have to load the extension again.
+
+For Firefox / Thunderbird you can also use
+https://github.com/Frewacom/pywalfox
+
+### Discord Pywal theme
+If you want your discord styled with pywal colors i recommend the following:
+
+https://github.com/Vendicated/Vencord  
+https://github.com/ZephyrCodesStuff/pywal-vencord
+
+Create a symbolic link as follows: ln -s $HOME/.cache/wal/colors-discord.css $HOME/.config/vesktop/themes/pywal-vencord.theme.css (find the right path in discord vencord settings by opening the themes folder)
+
+### ToDo
+- Thunderbird theme with https://github.com/Frewacom/pywalfox
+- Notion with pywal colours with https://notion-enhancer.github.io/
+- File manager with pywal colours
+- wl-recorder for screen recordings
+- nvim config with pywal colours

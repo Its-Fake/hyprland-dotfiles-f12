@@ -1,0 +1,95 @@
+
+@import '/home/timo/.cache/wal/colors.scss';
+
+.scale {
+  padding-right: 5px;
+
+  trough {
+    min-height: 8px;
+    background-color: rgba($color8, 0.2);
+    border-radius: 10px;
+  }
+
+  // This styles the filled part of the bar
+  highlight {
+    background-image: linear-gradient(to right, $color4, $color6);
+    border-radius: 10px;
+  }
+  
+  // This styles the draggable circle/handle (optional but nice)
+  slider {
+    background-color: $foreground;
+    min-width: 16px;
+    min-height: 16px;
+    border-radius: 50%;
+
+    opacity: 0;
+
+    transition: opacity 0.2s ease-in-out;
+
+    &.hover {
+      opacity: 1;
+      background-color: $foreground;
+    }
+  }
+}
+
+.audio-section {
+  background-color: rgba($color8, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 6px 0;
+}
+
+.paired-list {
+  min-height: 60px;
+}
+
+.available-list {
+  min-height: 100px;
+}
+
+.output-list {
+  min-height: 137px;
+  //font-size: 12px;
+}
+
+.input-list {
+  min-height: 137px;
+  //font-size: 12px;
+}
+
+.audio-panel {
+  padding: 8px;
+}
+
+.section-header {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+
+  .refresh-button {
+    font-weight: normal;
+    font-size: 0.9em;
+  }
+}
+
+.entry {
+
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out;
+  color: $foreground;
+
+  &.active {
+    background-color: rgba($color1, 0.4);
+  }
+
+  &:hover {
+    background-color: rgba($color1, 0.2);
+    color: $color6
+  }
+}

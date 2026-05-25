@@ -1,0 +1,12 @@
+configuration {
+    modi: "drun,run";
+    kb-row-up: "Up,Control+k";
+    kb-row-down: "Down,Control+j";
+    kb-remove-to-eol: "";
+    kb-accept-entry: "Return";    // Enter bleibt Enter
+    kb-cancel: "Escape";          // Esc bleibt Esc
+    show-icons: true;
+    drun-display-format: "{name}";
+    location: 0;                  // zentriert
+}
+@import "~/.cache/wal/colors-rofi-dark.rasi"
