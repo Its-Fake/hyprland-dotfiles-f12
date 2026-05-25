@@ -23,12 +23,12 @@ https://github.com/Frewacom/pywalfox
 If you want your discord styled with pywal colors i recommend the following:
 
 https://github.com/Vendicated/Vencord  
-https://github.com/ZephyrCodesStuff/pywal-vencord
+https://github.com/ZephyrCodesStuff/pywal-vencord  
+https://github.com/Vencord/Vesktop
 
 Create a symbolic link as follows: ln -s $HOME/.cache/wal/colors-discord.css $HOME/.config/vesktop/themes/pywal-vencord.theme.css (find the right path in discord vencord settings by opening the themes folder)
 
 ### ToDo
-- Thunderbird theme with https://github.com/Frewacom/pywalfox
 - Notion with pywal colours with https://notion-enhancer.github.io/
 - File manager with pywal colours
 - wl-recorder for screen recordings
